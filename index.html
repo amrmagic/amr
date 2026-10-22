@@ -99,37 +99,24 @@
         }
 
         .card.hidden {
-            display: none;
+            display: none !important;
             opacity: 0;
-            transform: scale(0.9) translateY(20px);
         }
 
         .card.active {
-            display: block;
+            display: block !important;
             animation: fadeIn 0.6s forwards ease-out;
         }
 
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: scale(0.9) translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
+            from { opacity: 0; transform: scale(0.9) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
         .lock-icon {
             font-size: 3.5rem;
             color: var(--primary);
             margin-bottom: 15px;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
         }
 
         h2 {
@@ -187,22 +174,11 @@
             box-shadow: 0 12px 25px rgba(255, 42, 109, 0.6);
         }
 
-        .btn:active {
-            transform: translateY(1px);
-        }
-
         .error-msg {
             color: #ff4d4d;
             font-size: 0.9rem;
             margin-top: 10px;
             display: none;
-            animation: shake 0.4s ease-in-out;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-8px); }
-            40%, 80% { transform: translateX(8px); }
         }
 
         .step-header {
@@ -246,7 +222,6 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.5s ease;
         }
 
         .caption {
@@ -288,12 +263,10 @@
         }
 
         @keyframes heartPulse {
-            0% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(255, 42, 109, 0.7)); }
-            15% { transform: scale(1.15); filter: drop-shadow(0 0 40px rgba(255, 42, 109, 0.9)); }
-            30% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(255, 42, 109, 0.7)); }
-            45% { transform: scale(1.08); filter: drop-shadow(0 0 30px rgba(255, 42, 109, 0.8)); }
-            60% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(255, 42, 109, 0.7)); }
-            100% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(255, 42, 109, 0.7)); }
+            0%, 100% { transform: scale(1); }
+            15% { transform: scale(1.15); }
+            30% { transform: scale(1); }
+            45% { transform: scale(1.08); }
         }
 
         .love-text {
@@ -304,8 +277,6 @@
             font-weight: 700;
             color: #ffffff;
             text-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
-            letter-spacing: 1px;
-            pointer-events: none;
             margin-top: -10px;
         }
 
@@ -313,13 +284,6 @@
             font-size: 4rem;
             color: #ffd700;
             margin-bottom: 15px;
-            animation: bounce 2s infinite;
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-20px); }
-            60% { transform: translateY(-10px); }
         }
 
         .birthday-title {
@@ -327,9 +291,6 @@
             font-weight: 900;
             color: #ffffff;
             margin-bottom: 15px;
-            background: linear-gradient(45deg, #ffb3c6, #ffffff, #ff2a6d);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
 
         .birthday-text {
@@ -344,20 +305,6 @@
             border: 1px solid var(--card-border);
             box-shadow: none;
             margin-top: 15px;
-        }
-
-        .btn-restart:hover {
-            background: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-
-        .fade-in-img {
-            animation: imgFade 0.5s ease-in-out;
-        }
-
-        @keyframes imgFade {
-            from { opacity: 0.3; transform: scale(1.05); }
-            to { opacity: 1; transform: scale(1); }
         }
     </style>
 </head>
@@ -376,17 +323,15 @@
         
         <!-- 1. شاشة الباسورد -->
         <div id="password-card" class="card active">
-            <div class="lock-icon">
-                <i class="fas fa-lock"></i>
-            </div>
+            <div class="lock-icon"><i class="fas fa-lock"></i></div>
             <h2>رسالة خاصة جداً 🔒</h2>
-            <p style="color: #ddd; margin-bottom: 20px; font-size: 0.95rem;">ادخلي كلمة السر لرؤية المفاجأة</p>
+            <p style="color: #ddd; margin-bottom: 20px; font-size: 0.95rem;">ادخلي كلمة السر لرؤية المفاجأة (love)</p>
             
             <div class="input-group">
                 <input type="password" id="passwordInput" placeholder="أدخلي كلمة السر..." autocomplete="off">
             </div>
             
-            <button class="btn" onclick="checkPassword()">
+            <button class="btn" id="loginBtn" type="button">
                 <span>افتح المفاجأة</span>
                 <i class="fas fa-key"></i>
             </button>
@@ -394,7 +339,7 @@
             <div id="errorMsg" class="error-msg">كلمة السر غير صحيحة! جربي (love) ❤️</div>
         </div>
 
-        <!-- 2. شاشة القصة (الصور الأربعة) -->
+        <!-- 2. شاشة القصة -->
         <div id="story-card" class="card hidden">
             <div class="step-header">
                 <span id="stepCounter">الخطوة 1 من 4</span>
@@ -411,7 +356,7 @@
 
             <div class="caption" id="storyCaption"></div>
 
-            <button class="btn" id="nextBtn" onclick="nextStep()">
+            <button class="btn" id="nextBtn" type="button">
                 <span id="btnText">التالي</span>
                 <i class="fas fa-arrow-left" id="btnIcon"></i>
             </button>
@@ -420,29 +365,23 @@
         <!-- 3. شاشة بحبك ❤️ -->
         <div id="love-card" class="card hidden final-screen">
             <div class="giant-heart-wrapper">
-                <div class="giant-heart">
-                    <i class="fas fa-heart"></i>
-                </div>
+                <div class="giant-heart"><i class="fas fa-heart"></i></div>
                 <div class="love-text">بحبك ❤️</div>
             </div>
 
-            <button class="btn" onclick="showBirthdayScreen()">
+            <button class="btn" id="giftBtn" type="button">
                 <span>المفاجأة الأخيرة ✨</span>
                 <i class="fas fa-gift"></i>
             </button>
         </div>
 
-        <!-- 4. شاشة كل سنة وانتي طيبة 🎉 -->
+        <!-- 4. شاشة عيد الميلاد -->
         <div id="birthday-card" class="card hidden final-screen">
-            <div class="birthday-icon">
-                <i class="fas fa-birthday-cake"></i>
-            </div>
+            <div class="birthday-icon"><i class="fas fa-birthday-cake"></i></div>
             <h1 class="birthday-title">كل سنة وانتي طيبة! 🎉🎂</h1>
-            <p class="birthday-text">
-                عقبال مليون سنة يا رب وانتي مبسوطة وفرحانة وجميلة دايماً، وربنا يديمك في حياتي أحلى وأغلى حاجة ❤️✨
-            </p>
+            <p class="birthday-text">عقبال مليون سنة يا رب وانتي مبسوطة وفرحانة وجميلة دايماً، وربنا يديمك في حياتي أحلى وأغلى حاجة ❤️✨</p>
 
-            <button class="btn btn-restart" onclick="restartStory()">
+            <button class="btn btn-restart" id="restartBtn" type="button">
                 <span>إعادة العرض ↺</span>
             </button>
         </div>
@@ -451,24 +390,11 @@
 
     <script>
         const CORRECT_PASSWORD = "love";
-
         const storySteps = [
-            {
-                image: "https://i.ibb.co/FLkgGc5N/image.jpg",
-                caption: "أول لحظة جمعتنا سوا.. من اليوم ده وحياتي بقى ليها طعم تاني خالص ✨"
-            },
-            {
-                image: "https://i.ibb.co/Kc4KX9x8/image.jpg",
-                caption: "كل ضحكة وكل كلمة بيننا بتأكدلي دايماً إنك أجمل اختيار اخترته في حياتي ❤️"
-            },
-            {
-                image: "https://i.ibb.co/pc6p6TJ/image.jpg",
-                caption: "وجودك جنبي بيملا أيامي بالدفء والأمان.. ووجودك هو كل اللي بتمناه 🌸"
-            },
-            {
-                image: "https://i.ibb.co/Mx0H4BKx/image.jpg",
-                caption: "وفي النهاية حابب أقولك كلمة واحدة طالعة من كل قلبي... 👇"
-            }
+            { image: "https://i.ibb.co/FLkgGc5N/image.jpg", caption: "أول لحظة جمعتنا سوا.. من اليوم ده وحياتي بقى ليها طعم تاني خالص ✨" },
+            { image: "https://i.ibb.co/Kc4KX9x8/image.jpg", caption: "كل ضحكة وكل كلمة بيننا بتأكدلي دايماً إنك أجمل اختيار اخترته في حياتي ❤️" },
+            { image: "https://i.ibb.co/pc6p6TJ/image.jpg", caption: "وجودك جنبي بيملا أيامي بالدفء والأمان.. ووجودك هو كل اللي بتمناه 🌸" },
+            { image: "https://i.ibb.co/Mx0H4BKx/image.jpg", caption: "وفي النهاية حابب أقولك كلمة واحدة طالعة من كل قلبي... 👇" }
         ];
 
         let currentStep = 0;
@@ -482,7 +408,6 @@
 
             if (input === CORRECT_PASSWORD) {
                 toggleMusic(true);
-
                 document.getElementById('password-card').classList.remove('active');
                 document.getElementById('password-card').classList.add('hidden');
                 
@@ -497,30 +422,20 @@
             }
         }
 
+        document.getElementById('loginBtn').addEventListener('click', checkPassword);
         document.getElementById('passwordInput').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-                checkPassword();
-            }
+            if (e.key === 'Enter') { checkPassword(); }
         });
 
         function loadStep(index) {
             const step = storySteps[index];
-            const imgEl = document.getElementById('storyImage');
-            
-            imgEl.classList.remove('fade-in-img');
-            void imgEl.offsetWidth; 
-            imgEl.classList.add('fade-in-img');
-            
-            imgEl.src = step.image;
+            document.getElementById('storyImage').src = step.image;
             document.getElementById('storyCaption').innerText = step.caption;
-            
             document.getElementById('stepCounter').innerText = الخطوة ${index + 1} من ${storySteps.length};
-            const progressPercent = ((index + 1) / storySteps.length) * 100;
-            document.getElementById('progressBar').style.width = ${progressPercent}%;
+            document.getElementById('progressBar').style.width = ${((index + 1) / storySteps.length) * 100}%;
 
             const btnText = document.getElementById('btnText');
             const btnIcon = document.getElementById('btnIcon');
-            
             if (index === storySteps.length - 1) {
                 btnText.innerText = "التالي ❤️";
                 btnIcon.className = "fas fa-heart";
@@ -530,118 +445,63 @@
             }
         }
 
-        function nextStep() {
+        document.getElementById('nextBtn').addEventListener('click', function() {
             if (currentStep < storySteps.length - 1) {
                 currentStep++;
                 loadStep(currentStep);
             } else {
-                showLoveScreen();
+                document.getElementById('story-card').classList.remove('active');
+                document.getElementById('story-card').classList.add('hidden');
+                setTimeout(() => {
+                    document.getElementById('love-card').classList.remove('hidden');
+                    document.getElementById('love-card').classList.add('active');
+                    confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: ['#ff2a6d', '#ffb3c6', '#ffffff'] });
+                }, 300);
             }
-        }
+        });
 
-        function showLoveScreen() {
-            document.getElementById('story-card').classList.remove('active');
-            document.getElementById('story-card').classList.add('hidden');
-
-            setTimeout(() => {
-                document.getElementById('love-card').classList.remove('hidden');
-                document.getElementById('love-card').classList.add('active');
-                triggerLoveConfetti();
-            }, 300);
-        }
-
-        function showBirthdayScreen() {
+        document.getElementById('giftBtn').addEventListener('click', function() {
             document.getElementById('love-card').classList.remove('active');
             document.getElementById('love-card').classList.add('hidden');
-
             setTimeout(() => {
                 document.getElementById('birthday-card').classList.remove('hidden');
                 document.getElementById('birthday-card').classList.add('active');
-                triggerBirthdayConfetti();
+                var duration = 3 * 1000, animationEnd = Date.now() + duration;
+                (function frame() {
+                    confetti({ particleCount: 7, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#ff2a6d', '#ffd700', '#ffffff'] });
+                    confetti({ particleCount: 7, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#ff2a6d', '#ffd700', '#ffffff'] });
+                    if (Date.now() < animationEnd) { requestAnimationFrame(frame); }
+                }());
             }, 300);
-        }
+        });
 
-        function restartStory() {
+        document.getElementById('restartBtn').addEventListener('click', function() {
             currentStep = 0;
             document.getElementById('birthday-card').classList.remove('active');
             document.getElementById('birthday-card').classList.add('hidden');
-
             setTimeout(() => {
                 document.getElementById('story-card').classList.remove('hidden');
                 document.getElementById('story-card').classList.add('active');
                 loadStep(0);
             }, 300);
-        }
-
-        function triggerLoveConfetti() {
-            confetti({
-                particleCount: 100,
-                spread: 70,
-                origin: { y: 0.6 },
-                colors: ['#ff2a6d', '#ffb3c6', '#ffffff']
-            });
-        }
-
-        function triggerBirthdayConfetti() {
-            var duration = 3 * 1000;
-            var animationEnd = Date.now() + duration;
-
-            (function frame() {
-                confetti({
-                    particleCount: 7,
-                    angle: 60,
-                    spread: 55,
-                    origin: { x: 0 },
-                    colors: ['#ff2a6d', '#ffd700', '#ffffff']
-                });
-                confetti({
-                    particleCount: 7,
-                    angle: 120,
-                    spread: 55,
-                    origin: { x: 1 },
-                    colors: ['#ff2a6d', '#ffd700', '#ffffff']
-                });
-
-                if (Date.now() < animationEnd) {
-                    requestAnimationFrame(frame);
-                }
-            }());
-        }
-
-        musicBtn.addEventListener('click', () => {
-            toggleMusic(!isMusicPlaying);
         });
 
+        musicBtn.addEventListener('click', () => { toggleMusic(!isMusicPlaying); });
         function toggleMusic(play) {
             if (play) {
-                bgMusic.play().then(() => {
-                    isMusicPlaying = true;
-                    musicBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
-                }).catch(() => {
-                    isMusicPlaying = false;
-                });
+                bgMusic.play().then(() => { isMusicPlaying = true; musicBtn.innerHTML = '<i class="fas fa-volume-up"></i>'; }).catch(() => { isMusicPlaying = false; });
             } else {
-                bgMusic.pause();
-                isMusicPlaying = false;
-                musicBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                bgMusic.pause(); isMusicPlaying = false; musicBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
             }
         }
 
         const canvas = document.getElementById('particles-canvas');
         const ctx = canvas.getContext('2d');
-
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resizeCanvas); resizeCanvas();
 
         class HeartParticle {
-            constructor() {
-                this.reset();
-            }
-
+            constructor() { this.reset(); }
             reset() {
                 this.x = Math.random() * canvas.width;
                 this.y = canvas.height + Math.random() * 20;
@@ -651,40 +511,25 @@
                 this.opacity = Math.random() * 0.5 + 0.2;
                 this.color = rgba(255, ${Math.floor(Math.random() * 100 + 50)}, ${Math.floor(Math.random() * 150 + 100)}, ${this.opacity});
             }
-
             update() {
-                this.y -= this.speedY;
-                this.x += this.speedX;
-                if (this.y < -20) {
-                    this.reset();
-                }
+                this.y -= this.speedY; this.x += this.speedX;
+                if (this.y < -20) { this.reset(); }
             }
-
             draw() {
-                ctx.save();
-                ctx.translate(this.x, this.y);
-                ctx.fillStyle = this.color;
-                ctx.beginPath();
+                ctx.save(); ctx.translate(this.x, this.y); ctx.fillStyle = this.color; ctx.beginPath();
                 const topCurveHeight = this.size * 0.3;
                 ctx.moveTo(0, topCurveHeight);
                 ctx.bezierCurveTo(0, 0, -this.size / 2, 0, -this.size / 2, topCurveHeight);
                 ctx.bezierCurveTo(-this.size / 2, (this.size + topCurveHeight) / 2, 0, this.size, 0, this.size);
                 ctx.bezierCurveTo(0, this.size, this.size / 2, (this.size + topCurveHeight) / 2, this.size / 2, topCurveHeight);
                 ctx.bezierCurveTo(this.size / 2, 0, 0, 0, 0, topCurveHeight);
-                ctx.closePath();
-                ctx.fill();
-                ctx.restore();
+                ctx.closePath(); ctx.fill(); ctx.restore();
             }
         }
-
         const particles = Array.from({ length: 35 }, () => new HeartParticle());
-
         function animateParticles() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => {
-                p.update();
-                p.draw();
-            });
+            particles.forEach(p => { p.update(); p.draw(); });
             requestAnimationFrame(animateParticles);
         }
         animateParticles();
