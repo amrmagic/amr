@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مفاجأة خاصة جداً ❤️</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800;900&family=Reem+Kufi:wght@700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #ff2a6d;
+            --primary-hover: #d1114d;
+            --accent: #ffb3c6;
+            --bg-start: #1a0b16;
+            --bg-end: #360924;
+            --card-bg: rgba(255, 255, 255, 0.08);
+            --card-border: rgba(255, 255, 255, 0.15);
+            --text-color: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            color: var(--text-color);
+            position: relative;
+        }
+
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .music-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--card-border);
+            color: #fff;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .music-btn:hover {
+            transform: scale(1.1);
+            background: var(--primary);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 450px;
+            z-index: 10;
+            position: relative;
+            margin: 20px 0;
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 30px 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+            text-align: center;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card.hidden {
+            display: none;
+            opacity: 0;
+            transform: scale(0.9) translateY(20px);
+        }
+
+        .card.active {
+            display: block;
+            animation: fadeIn 0.6s forwards ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .lock-icon {
+            font-size: 3.5rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        input[type="password"] {
+            width: 100%;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid var(--card-border);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1.2rem;
+            text-align: center;
+            outline: none;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        input[type="password"]:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(255, 42, 109, 0.4);
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(45deg, var(--primary), #ff6b8b);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(255, 42, 109, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-family: inherit;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(255, 42, 109, 0.6);
+        }
+
+        .btn:active {
+            transform: translateY(1px);
+        }
+
+        .error-msg {
+            color: #ff4d4d;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            display: none;
+            animation: shake 0.4s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-8px); }
+            40%, 80% { transform: translateX(8px); }
+        }
+
+        .step-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            color: var(--accent);
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        .img-container {
+            width: 100%;
+            height: 280px;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            border: 2px solid var(--card-border);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            position: relative;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .caption {
+            font-size: 1.15rem;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            color: #f1f1f1;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .final-screen {
+            padding: 20px 10px;
+        }
+
+        .giant-heart-wrapper {
+            position: relative;
+            width: 260px;
+            height: 260px;
+            margin: 20px auto 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .giant-heart {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            color: var(--primary);
+            font-size: 240px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            filter: drop-shadow(0 0 25px rgba(255, 42, 109, 0.8));
+            animation: heartPulse 1.2s infinite ease-in-out;
+        }
+
+        @keyframes heartPulse {
+            0% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(255, 42, 109, 0.7)); }
+            15% { transform: scale(1.15); filter: drop-shadow(0 0 40px rgba(255, 42, 109, 0.9)); }
+            30% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(255, 42, 109, 0.7)); }
+            45% { transform: scale(1.08); filter: drop-shadow(0 0 30px rgba(255, 42, 109, 0.8)); }
+            60% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(255, 42, 109, 0.7)); }
+            100% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(255, 42, 109, 0.7)); }
+        }
+
+        .love-text {
+            position: relative;
+            z-index: 5;
+            font-family: 'Reem Kufi', sans-serif;
+            font-size: 3.2rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+            letter-spacing: 1px;
+            pointer-events: none;
+            margin-top: -10px;
+        }
+
+        .birthday-icon {
+            font-size: 4rem;
+            color: #ffd700;
+            margin-bottom: 15px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+            60% { transform: translateY(-10px); }
+        }
+
+        .birthday-title {
+            font-size: 2rem;
+            font-weight: 900;
+            color: #ffffff;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, #ffb3c6, #ffffff, #ff2a6d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .birthday-text {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #f8f8f8;
+            margin-bottom: 25px;
+        }
+
+        .btn-restart {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--card-border);
+            box-shadow: none;
+            margin-top: 15px;
+        }
+
+        .btn-restart:hover {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .fade-in-img {
+            animation: imgFade 0.5s ease-in-out;
+        }
+
+        @keyframes imgFade {
+            from { opacity: 0.3; transform: scale(1.05); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="particles-canvas"></canvas>
+
+    <button class="music-btn" id="musicToggle" title="تشغيل/إيقاف الموسيقى">
+        <i class="fas fa-music"></i>
+    </button>
+    <audio id="bgMusic" loop>
+        <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-piano-112187.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="container">
+        
+        <!-- 1. شاشة الباسورد -->
+        <div id="password-card" class="card active">
+            <div class="lock-icon">
+                <i class="fas fa-lock"></i>
+            </div>
+            <h2>رسالة خاصة جداً 🔒</h2>
+            <p style="color: #ddd; margin-bottom: 20px; font-size: 0.95rem;">ادخلي كلمة السر لرؤية المفاجأة</p>
+            
+            <div class="input-group">
+                <input type="password" id="passwordInput" placeholder="أدخلي كلمة السر..." autocomplete="off">
+            </div>
+            
+            <button class="btn" onclick="checkPassword()">
+                <span>افتح المفاجأة</span>
+                <i class="fas fa-key"></i>
+            </button>
+            
+            <div id="errorMsg" class="error-msg">كلمة السر غير صحيحة! جربي (love) ❤️</div>
+        </div>
+
+        <!-- 2. شاشة القصة (الصور الأربعة) -->
+        <div id="story-card" class="card hidden">
+            <div class="step-header">
+                <span id="stepCounter">الخطوة 1 من 4</span>
+                <i class="fas fa-heart" style="color: var(--primary);"></i>
+            </div>
+            
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+
+            <div class="img-container">
+                <img id="storyImage" src="" alt="ذكرياتنا">
+            </div>
+
+            <div class="caption" id="storyCaption"></div>
+
+            <button class="btn" id="nextBtn" onclick="nextStep()">
+                <span id="btnText">التالي</span>
+                <i class="fas fa-arrow-left" id="btnIcon"></i>
+            </button>
+        </div>
+
+        <!-- 3. شاشة بحبك ❤️ -->
+        <div id="love-card" class="card hidden final-screen">
+            <div class="giant-heart-wrapper">
+                <div class="giant-heart">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <div class="love-text">بحبك ❤️</div>
+            </div>
+
+            <button class="btn" onclick="showBirthdayScreen()">
+                <span>المفاجأة الأخيرة ✨</span>
+                <i class="fas fa-gift"></i>
+            </button>
+        </div>
+
+        <!-- 4. شاشة كل سنة وانتي طيبة 🎉 -->
+        <div id="birthday-card" class="card hidden final-screen">
+            <div class="birthday-icon">
+                <i class="fas fa-birthday-cake"></i>
+            </div>
+            <h1 class="birthday-title">كل سنة وانتي طيبة! 🎉🎂</h1>
+            <p class="birthday-text">
+                عقبال مليون سنة يا رب وانتي مبسوطة وفرحانة وجميلة دايماً، وربنا يديمك في حياتي أحلى وأغلى حاجة ❤️✨
+            </p>
+
+            <button class="btn btn-restart" onclick="restartStory()">
+                <span>إعادة العرض ↺</span>
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        const CORRECT_PASSWORD = "love";
+
+        const storySteps = [
+            {
+                image: "https://i.ibb.co/FLkgGc5N/image.jpg",
+                caption: "أول لحظة جمعتنا سوا.. من اليوم ده وحياتي بقى ليها طعم تاني خالص ✨"
+            },
+            {
+                image: "https://i.ibb.co/Kc4KX9x8/image.jpg",
+                caption: "كل ضحكة وكل كلمة بيننا بتأكدلي دايماً إنك أجمل اختيار اخترته في حياتي ❤️"
+            },
+            {
+                image: "https://i.ibb.co/pc6p6TJ/image.jpg",
+                caption: "وجودك جنبي بيملا أيامي بالدفء والأمان.. ووجودك هو كل اللي بتمناه 🌸"
+            },
+            {
+                image: "https://i.ibb.co/Mx0H4BKx/image.jpg",
+                caption: "وفي النهاية حابب أقولك كلمة واحدة طالعة من كل قلبي... 👇"
+            }
+        ];
+
+        let currentStep = 0;
+        let isMusicPlaying = false;
+        const bgMusic = document.getElementById('bgMusic');
+        const musicBtn = document.getElementById('musicToggle');
+
+        function checkPassword() {
+            const input = document.getElementById('passwordInput').value.trim().toLowerCase();
+            const errorMsg = document.getElementById('errorMsg');
+
+            if (input === CORRECT_PASSWORD) {
+                toggleMusic(true);
+
+                document.getElementById('password-card').classList.remove('active');
+                document.getElementById('password-card').classList.add('hidden');
+                
+                setTimeout(() => {
+                    document.getElementById('story-card').classList.remove('hidden');
+                    document.getElementById('story-card').classList.add('active');
+                    loadStep(0);
+                }, 300);
+            } else {
+                errorMsg.style.display = 'block';
+                document.getElementById('passwordInput').value = '';
+            }
+        }
+
+        document.getElementById('passwordInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+
+        function loadStep(index) {
+            const step = storySteps[index];
+            const imgEl = document.getElementById('storyImage');
+            
+            imgEl.classList.remove('fade-in-img');
+            void imgEl.offsetWidth; 
+            imgEl.classList.add('fade-in-img');
+            
+            imgEl.src = step.image;
+            document.getElementById('storyCaption').innerText = step.caption;
+            
+            document.getElementById('stepCounter').innerText = الخطوة ${index + 1} من ${storySteps.length};
+            const progressPercent = ((index + 1) / storySteps.length) * 100;
+            document.getElementById('progressBar').style.width = ${progressPercent}%;
+
+            const btnText = document.getElementById('btnText');
+            const btnIcon = document.getElementById('btnIcon');
+            
+            if (index === storySteps.length - 1) {
+                btnText.innerText = "التالي ❤️";
+                btnIcon.className = "fas fa-heart";
+            } else {
+                btnText.innerText = "التالي";
+                btnIcon.className = "fas fa-arrow-left";
+            }
+        }
+
+        function nextStep() {
+            if (currentStep < storySteps.length - 1) {
+                currentStep++;
+                loadStep(currentStep);
+            } else {
+                showLoveScreen();
+            }
+        }
+
+        function showLoveScreen() {
+            document.getElementById('story-card').classList.remove('active');
+            document.getElementById('story-card').classList.add('hidden');
+
+            setTimeout(() => {
+                document.getElementById('love-card').classList.remove('hidden');
+                document.getElementById('love-card').classList.add('active');
+                triggerLoveConfetti();
+            }, 300);
+        }
+
+        function showBirthdayScreen() {
+            document.getElementById('love-card').classList.remove('active');
+            document.getElementById('love-card').classList.add('hidden');
+
+            setTimeout(() => {
+                document.getElementById('birthday-card').classList.remove('hidden');
+                document.getElementById('birthday-card').classList.add('active');
+                triggerBirthdayConfetti();
+            }, 300);
+        }
+
+        function restartStory() {
+            currentStep = 0;
+            document.getElementById('birthday-card').classList.remove('active');
+            document.getElementById('birthday-card').classList.add('hidden');
+
+            setTimeout(() => {
+                document.getElementById('story-card').classList.remove('hidden');
+                document.getElementById('story-card').classList.add('active');
+                loadStep(0);
+            }, 300);
+        }
+
+        function triggerLoveConfetti() {
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#ff2a6d', '#ffb3c6', '#ffffff']
+            });
+        }
+
+        function triggerBirthdayConfetti() {
+            var duration = 3 * 1000;
+            var animationEnd = Date.now() + duration;
+
+            (function frame() {
+                confetti({
+                    particleCount: 7,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    colors: ['#ff2a6d', '#ffd700', '#ffffff']
+                });
+                confetti({
+                    particleCount: 7,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                    colors: ['#ff2a6d', '#ffd700', '#ffffff']
+                });
+
+                if (Date.now() < animationEnd) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+        }
+
+        musicBtn.addEventListener('click', () => {
+            toggleMusic(!isMusicPlaying);
+        });
+
+        function toggleMusic(play) {
+            if (play) {
+                bgMusic.play().then(() => {
+                    isMusicPlaying = true;
+                    musicBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+                }).catch(() => {
+                    isMusicPlaying = false;
+                });
+            } else {
+                bgMusic.pause();
+                isMusicPlaying = false;
+                musicBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+            }
+        }
+
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class HeartParticle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = canvas.height + Math.random() * 20;
+                this.size = Math.random() * 12 + 6;
+                this.speedY = Math.random() * 1.5 + 0.5;
+                this.speedX = Math.sin(Math.random() * Math.PI) * 0.5;
+                this.opacity = Math.random() * 0.5 + 0.2;
+                this.color = rgba(255, ${Math.floor(Math.random() * 100 + 50)}, ${Math.floor(Math.random() * 150 + 100)}, ${this.opacity});
+            }
+
+            update() {
+                this.y -= this.speedY;
+                this.x += this.speedX;
+                if (this.y < -20) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                const topCurveHeight = this.size * 0.3;
+                ctx.moveTo(0, topCurveHeight);
+                ctx.bezierCurveTo(0, 0, -this.size / 2, 0, -this.size / 2, topCurveHeight);
+                ctx.bezierCurveTo(-this.size / 2, (this.size + topCurveHeight) / 2, 0, this.size, 0, this.size);
+                ctx.bezierCurveTo(0, this.size, this.size / 2, (this.size + topCurveHeight) / 2, this.size / 2, topCurveHeight);
+                ctx.bezierCurveTo(this.size / 2, 0, 0, 0, 0, topCurveHeight);
+                ctx.closePath();
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        const particles = Array.from({ length: 35 }, () => new HeartParticle());
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+    </script>
+</body>
+</html>
